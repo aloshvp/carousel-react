@@ -1,33 +1,45 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import Carousel from './components/Carousel';
-import { PHOTO_API_URL } from './utils/constant';
+
 
 function App() {
 
   const [isLoading, setIsLoading] = useState(false);
+  const [images, setImages] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(PHOTO_API_URL);
-      const data = await response.json();
-      console.log(data)
-    }
-
-    fetchData();
+    fetchData(10);
   }, [])
 
+  const fetchData = async (imgLimit = 1) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`https://picsum.photos/v2/list?page=1&limit=${imgLimit}`);
+      const data = await response.json();
+      console.log(data)
+      setImages(data);
+    }
+    catch (error) {
+      console.error("Error fetching images", error);
+    }
+    finally {
+      setIsLoading(false);
+    }
+
+  }
+
   return (
-    <>
+    <div className='carouselContainer'>
       <Carousel
-        // images={[]}
+        images={images}
         isLoading={isLoading}
       // imgPerSlide={ }
       // imageLimit={ }
       // customPrevButton={ }
       // customNextButton={ }
       />
-    </>
+    </div>
   )
 }
 
