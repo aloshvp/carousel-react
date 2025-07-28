@@ -30,7 +30,7 @@ function App() {
   }
 
   return (
-    <div className='carouselContainer'>
+    <div className='carousel-container'>
       <Carousel
         images={images}
         isLoading={isLoading}
